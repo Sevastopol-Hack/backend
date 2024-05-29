@@ -38,7 +38,7 @@ async def lifespan(app: FastAPI):
         await database_.disconnect()
 
 
-app = FastAPI(lifespan=lifespan, title="Bitracking api")
+app = FastAPI(lifespan=lifespan, title="bitech api")
 app.state.database = database
 
 if METRICS:

@@ -1,10 +1,10 @@
 version: '3.8'
 
-x-bitracking_api-variables: &bitracking_api-variables
+x-bitech_api-variables: &bitech_api-variables
   DB_USER: postgres
   DB_PASSWORD: postgres
-  DB_NAME: bitracking_api
-  DB_HOST: bitracking_api_database
+  DB_NAME: bitech_api
+  DB_HOST: bitech_api_database
   DB_PORT: 5432
   PRODUCTION: false
   METRICS: false
@@ -13,20 +13,24 @@ x-bitracking_api-variables: &bitracking_api-variables
   YOOKASSA_SECRET_KEY: "test_Bu_njDYEmKSqZjIKHEA0cnGmZnATPV7INM1irDsLWEc"
   MINIO_ENDPOINT_URL: "http://api_s3:9000"
   S3_WORKER_API: "http://s3_worker:8000"
+  YAGPT_KEY: "AQVN2Vd-gMlDAjVPAKNMAYxb7t6JpNOag60-Mcgz"
+  YAGPT_MODEL_URI: "gpt://b1g2ahktcv1255vqabvd/yandexgpt"
+  SMS_EMAIL: atrepalin19@gmail.com
+  SMS_KEY: rJ8VN0ewPs7PkSzyn7OoTNjdQThwtUqs
 
 services:
-  bitracking_api:
+  bitech_api:
     build: .
     command: python main.py
     ports:
       - '8078:80'
     environment:
-      <<: *bitracking_api-variables
+      <<: *bitech_api-variables
     volumes:
       - ./:/app
     restart: always
     depends_on:
-      bitracking_api_database:
+      bitech_api_database:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost/ping"]
@@ -34,16 +38,16 @@ services:
       timeout: 10s
       retries: 5
 
-  bitracking_api_database:
+  bitech_api_database:
     image: postgres:14-alpine
     command: postgres -N 100
     volumes:
-      - bitracking_api_database_volume:/var/lib/postgresql/data/
+      - bitech_api_database_volume:/var/lib/postgresql/data/
     restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=bitracking_api
+      - POSTGRES_DB=bitech_api
     ports:
       - '54324:5432'
     healthcheck:
@@ -53,4 +57,4 @@ services:
       retries: 5
 
 volumes:
-  bitracking_api_database_volume:
+  bitech_api_database_volume:

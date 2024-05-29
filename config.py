@@ -10,7 +10,7 @@ load_dotenv()
 
 VOTE_PRICE = 100
 DESCRIPTION = "Покупка голосов"
-HOST = "https://bitracking.ru"
+HOST = "https://bitech.ru"
 
 METRICS = os.environ.get("METRICS", "") == "true"
 
@@ -32,7 +32,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 30
 # S3
 MINIO_ADDRESS = os.environ.get("MINIO_ADDRESS")
 S3_WORKER_API = os.environ.get("S3_WORKER_API")
-BUCKET_NAME = "bitracking"
+BUCKET_NAME = "bitech"
 
 # YOOKASSA
 YOOKASSA_ACCOUNT_ID = os.environ.get("YOOKASSA_ACCOUNT_ID", None)
@@ -40,6 +40,11 @@ YOOKASSA_SECRET_KEY = os.environ.get("YOOKASSA_SECRET_KEY", None)
 Configuration.account_id = YOOKASSA_ACCOUNT_ID
 Configuration.secret_key = YOOKASSA_SECRET_KEY
 
+YAGPT_KEY = os.environ.get("YAGPT_KEY")
+YAGPT_MODEL_URI = os.environ.get("YAGPT_MODEL_URI")
+
+SMS_EMAIL = os.environ.get("SMS_EMAIL")
+SMS_KEY = os.environ.get("SMS_KEY")
 
 # LOGGING
 LOGGING_CONFIG: Dict[str, Any] = {

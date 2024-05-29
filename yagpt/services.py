@@ -1,12 +1,11 @@
-import asyncio
-
+from config import YAGPT_KEY, YAGPT_MODEL_URI
 import aiohttp
 
 
 class YAGPTService:
     async def get_reason(self, region: str):
         prompt = {
-            "modelUri": "gpt://b1g2ahktcv1255vqabvd/yandexgpt",
+            "modelUri": YAGPT_MODEL_URI,
             "completionOptions": {
                 "stream": False,
                 "temperature": 0.5,
@@ -29,7 +28,7 @@ class YAGPTService:
         url = "https://llm.api.cloud.yandex.net/foundationModels/v1/completion"
         headers = {
             "Content-Type": "application/json",
-            "Authorization": "Api-Key AQVN2Vd-gMlDAjVPAKNMAYxb7t6JpNOag60-Mcgz",
+            "Authorization": f"Api-Key {YAGPT_KEY}",
         }
 
         async with aiohttp.ClientSession() as session:
