@@ -1,0 +1,56 @@
+version: '3.8'
+
+x-bitracking_api-variables: &bitracking_api-variables
+  DB_USER: postgres
+  DB_PASSWORD: postgres
+  DB_NAME: bitracking_api
+  DB_HOST: bitracking_api_database
+  DB_PORT: 5432
+  PRODUCTION: false
+  METRICS: false
+  SECRET_KEY: "fgdfgojnfgoi94409tj0idfgidnf"
+  YOOKASSA_ACCOUNT_ID: "212591"
+  YOOKASSA_SECRET_KEY: "test_Bu_njDYEmKSqZjIKHEA0cnGmZnATPV7INM1irDsLWEc"
+  MINIO_ENDPOINT_URL: "http://api_s3:9000"
+  S3_WORKER_API: "http://s3_worker:8000"
+
+services:
+  bitracking_api:
+    build: .
+    command: python main.py
+    ports:
+      - '8078:80'
+    environment:
+      <<: *bitracking_api-variables
+    volumes:
+      - ./:/app
+    restart: always
+    depends_on:
+      bitracking_api_database:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  bitracking_api_database:
+    image: postgres:14-alpine
+    command: postgres -N 100
+    volumes:
+      - bitracking_api_database_volume:/var/lib/postgresql/data/
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=bitracking_api
+    ports:
+      - '54324:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  bitracking_api_database_volume:
