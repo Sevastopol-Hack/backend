@@ -78,6 +78,4 @@ volumes:
   api_database_volume:
   mongodb_data_volume:
 
-networks:
-  biwork-backend:
 

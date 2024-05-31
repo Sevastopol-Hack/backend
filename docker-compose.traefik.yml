@@ -12,6 +12,13 @@ services:
     networks:
       - traefik
 
+  api_database:
+      networks:
+      - traefik
+  mongodb_database:
+      networks:
+      - traefik
+
 networks:
   traefik:
     external: true
