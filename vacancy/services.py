@@ -18,4 +18,4 @@ class VacancyService:
         return res
 
     async def update(self, vacancy: VacancyModel):
-        return await self.repository.create(vacancy)
+        return await self.repository.update(vacancy)

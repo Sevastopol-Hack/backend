@@ -1,6 +1,7 @@
 from typing import List, Optional
 
 from bson import ObjectId
+from pymongo import ReturnDocument
 
 from resume.models import ResumeModel, UploadedResume
 from database import mongo_db
@@ -96,6 +97,20 @@ class ResumeRepository:
         obj = self.object_model(**r)
 
         return obj
+
+    async def update(self, object_update: ResumeModel):
+        # self.collection.
+        res = await self.collection.find_one_and_update(
+            {"_id": ObjectId(object_update.id)},
+            {"$set": object_update.dict(exclude={"_id", "id"})},
+            return_document=ReturnDocument.AFTER
+            )
+
+        # r = await self.collection.find_one({"_id": res.inserted_id})
+        #
+        # obj = self.object_model(**r)
+
+        return res
 
     async def delete(self, object_id: str) -> Optional[object_model]:
         return await is_document_found(

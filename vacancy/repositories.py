@@ -1,6 +1,7 @@
 from typing import List, Optional
 
 from bson import ObjectId
+from pymongo import ReturnDocument
 
 from database import mongo_db
 from .schemas import SearchResponse
@@ -53,6 +54,15 @@ class VacancyRepository:
         obj = self.object_model(**r)
 
         return obj
+
+    async def update(self, object_update: VacancyModel):
+        res = await self.collection.find_one_and_update(
+            {"_id": object_update.id},
+            {"$set": object_update.dict(exclude={"_id", "id"})},
+            return_document=ReturnDocument.AFTER
+        )
+
+        return res
 
     async def delete(self, object_id: str) -> Optional[object_model]:
         return await is_document_found(

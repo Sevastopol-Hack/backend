@@ -14,7 +14,7 @@ class ResumeService:
     repository = ResumeRepository()
 
     async def update(self, resume: ResumeModel):
-        return await self.repository.create(resume)
+        return await self.repository.update(resume)
 
     async def get(self, _id: str):
         return await self.repository.get_by_id(_id)
