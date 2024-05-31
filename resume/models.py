@@ -10,20 +10,20 @@ from bson import ObjectId
 
 
 class Job(BaseModel):
-    name: str
-    post: str
-    start: int
-    end: int
+    name: str = ""
+    post: str = ""
+    start: int = 0
+    end: int = 0
 
 
 class ResumeModel(BaseModel):
     id: Optional[PyObjectId] = PydanticField(default_factory=PyObjectId, alias="_id")
     created_at: Optional[float] = Field(default=None, validate_default=True)
-    fio: str
-    age: int
-    experience: int
-    stack: List[str]
-    jobs: list[Job]
+    fio: str = ""
+    age: int = 0
+    experience: int = 0
+    stack: List[str] = []
+    jobs: list[Job] = []
     filename: str = None
     email: str = ""
 
