@@ -63,3 +63,6 @@ class ResumeService:
 
     async def get_upload(self, ur_id: str):
         return await UploadedResumeRepository().get_by_id(ur_id)
+
+    async def get_match_vacancy(self, resume_id: str):
+        return await self.repository.get_match_vacancy(resume_id)

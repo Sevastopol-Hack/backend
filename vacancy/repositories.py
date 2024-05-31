@@ -14,9 +14,12 @@ class VacancyRepository:
 
     async def search(self, query: str, limit: int = 20,
                      skip: int = 0, ) -> SearchResponse:
-        filter_ = {
-            "$text": {"$search": query.strip()}
-        }
+        # filter_ = {
+        #     "$text": {"$search": query.strip()}
+        # }
+        filter_ = {}
+        if query.strip():
+            filter_["$text"] = {"$search": query.strip()}
         res = [document async for document in self.collection.find(filter_)
         .skip(skip)
         .limit(limit)]

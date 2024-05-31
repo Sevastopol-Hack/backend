@@ -44,3 +44,9 @@ async def update_resume(update_resume: ResumeModel,
 async def get_resume(_id: str,
                      resume_service: ResumeService = Depends()):
     return await resume_service.get_upload(_id)
+
+
+@resume_router.get("/match/{resume_id}")
+async def get_resume(resume_id: str,
+                     resume_service: ResumeService = Depends()):
+    return await resume_service.get_match_vacancy(resume_id)

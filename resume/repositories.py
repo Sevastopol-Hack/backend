@@ -6,6 +6,7 @@ from resume.models import ResumeModel, UploadedResume
 from database import mongo_db
 from resume.schemas import SearchResponse, SearchResume
 from utils.mongodb import is_document_found
+from vacancy.repositories import VacancyRepository
 
 
 class ResumeRepository:
@@ -17,6 +18,24 @@ class ResumeRepository:
         for r in resumes:
             r["_id"] = str(r["_id"])
         return resumes
+
+    def get_match(self, stack, stack_need) -> float:
+        return len(
+            (set([s.strip().lower() for s in stack_need]) & set(
+                [s.strip().lower() for s in stack]))) / len(stack_need)
+
+    async def get_match_vacancy(self, resume_id: str):
+        resume = await self.get_by_id(resume_id)
+        vacancy = await VacancyRepository().get_all(limit=10000)
+        res = []
+        for v in vacancy:
+            v["_id"] = str(v["_id"])
+            del v["id"]
+            perc = self.get_match(resume["stack"], v["stack"])
+            if perc >= 0.8:
+                v["percent"] = perc
+                res.append(v)
+        return res
 
     async def search(self, limit: int = 20, skip: int = 0, experience_from: int = 0,
                      experience_to: int = 100,
@@ -45,9 +64,7 @@ class ResumeRepository:
         # if stack:
         for resum in resumes:
             if stack:
-
-                resum.percent = len(
-                    (set(stack) & set(resum.stack))) / len(stack)
+                resum.percent = self.get_match(resum.stack, stack)
             else:
                 resum.percent = 1
 
@@ -84,8 +101,6 @@ class ResumeRepository:
         return await is_document_found(
             await self.collection.find_one_and_delete({"_id": ObjectId(object_id)}))
 
-    # async def uploa
-
 
 class UploadedResumeRepository:
     object_model = UploadedResume
@@ -111,7 +126,7 @@ class UploadedResumeRepository:
         res["_id"] = str(res["_id"])
         collection = mongo_db.Resumes
 
-        resumes =  [_ async for _ in mongo_db.Resumes.find(
+        resumes = [_ async for _ in mongo_db.Resumes.find(
             {"_id": {"$in": [ObjectId(obj_id) for obj_id in res["resumes"]]}})]
         for r in resumes:
             del r["id"]
