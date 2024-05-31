@@ -28,7 +28,7 @@ async def upload_vacancy(vacancy: VacancyModel,
     return await vacancy_service.creat(vacancy)
 
 
-@vacancy_router.put("/")
+@vacancy_router.put("")
 async def update_vacancy(vacancy: VacancyModel,
                          vacancy_service: VacancyService = Depends()) -> VacancyModel:
     return await vacancy_service.update(vacancy)

@@ -33,7 +33,7 @@ async def lifespan(app: FastAPI):
     if not database_.is_connected:
         await database_.connect()
 
-    # await StackService().init_default_stack()
+    await StackService().init_default_stack()
 
 
     yield
@@ -45,7 +45,7 @@ async def lifespan(app: FastAPI):
         await database_.disconnect()
 
 
-app = FastAPI(lifespan=lifespan, title="bitech api")
+app = FastAPI(lifespan=lifespan, title="biwork api")
 app.state.database = database
 
 if METRICS:
