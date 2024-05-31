@@ -1,4 +1,5 @@
 import asyncio
+import json
 import uuid
 from typing import List
 
@@ -48,9 +49,11 @@ class ResumeService:
         tasks = await asyncio.gather(*[resume_parser(f) for f in file_urls])
 
         for fname, parse in tasks:
+            print(parse)
+
             resume = ResumeModel(**{"created_at": 0,
-                                    **parse,
-                                    "filename": fname})
+                                    **json.loads(parse),
+                                    "filename": fname,})
             # resume.filename = filename
             resumes.append(resume.dict())
 
