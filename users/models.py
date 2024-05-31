@@ -25,7 +25,7 @@ class User(ormar.Model):
     id: int = ormar.Integer(primary_key=True)
     name: str = ormar.String(max_length=200)
     surname: str = ormar.String(max_length=200)
-    phone: str = ormar.String(max_length=200)
+    username: str = ormar.String(max_length=200)
     is_verified: bool = ormar.Boolean(default=False)
     role: Roles = ormar.Enum(enum_class=Roles)
     password_hash: str = ormar.String(max_length=200)

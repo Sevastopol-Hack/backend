@@ -6,7 +6,7 @@ from .models import User, Roles
 class UserCreate(BaseModel):
     name: str
     surname: str
-    phone: str
+    username: str
     password: str
     role: Roles
 
@@ -25,7 +25,7 @@ class TokenData(BaseModel):
 
 
 class UserLogin(BaseModel):
-    phone: str
+    username: str
     password: str
 
 

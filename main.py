@@ -33,7 +33,7 @@ async def lifespan(app: FastAPI):
     if not database_.is_connected:
         await database_.connect()
 
-    await StackService().init_default_stack()
+    # await StackService().init_default_stack()
 
 
     yield

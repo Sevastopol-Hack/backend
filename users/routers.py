@@ -29,7 +29,7 @@ async def register(user_create: UserCreate) -> Token:
 
 @user_router.post("/token")
 async def login_for_access_token(user_login: UserLogin) -> Token:
-    user = await UserService().authenticate_user(user_login.phone, user_login.password)
+    user = await UserService().authenticate_user(user_login.username, user_login.password)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

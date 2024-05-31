@@ -18,8 +18,8 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 class UserService:
     repository = UserRepository()
 
-    async def authenticate_user(self, phone: str, password: str) -> User | None:
-        user = await self.repository.get_by_phone(phone)
+    async def authenticate_user(self, username: str, password: str) -> User | None:
+        user = await self.repository.get_by_username(username)
         if not user:
             return
         if not verify_password(password, user.password_hash):
