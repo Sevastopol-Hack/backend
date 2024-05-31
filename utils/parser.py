@@ -32,7 +32,7 @@ async def get_text(filename: str):
 
                 match mimetype:
                     case "text/plain":
-                        return str(body)
+                        return body.decode()
                     case "text/rtf":
                         return rtf_to_text(body.decode())
                     case "application/vnd.oasis.opendocument.text":
@@ -68,8 +68,6 @@ async def parse(filename: str):
     if not data:
         return
 
-    return
-
     prompt = {
         "modelUri": YAGPT_MODEL_URI,
         "completionOptions": {
@@ -101,7 +99,7 @@ async def parse(filename: str):
             result = result["result"]["alternatives"][0]["message"]["text"]
             result = result.replace("#", "")
             result = result.replace("*", "")
-    return result
+    return filename, result
 
 
 async def main():

@@ -1,3 +1,4 @@
+import asyncio
 import uuid
 from typing import List
 
@@ -8,6 +9,7 @@ from s3.api import S3Worker
 from .models import ResumeModel
 from .repositories import ResumeRepository, UploadedResumeRepository
 from .schemas import SearchRequest, SearchResponse
+from utils.parser import parse
 
 
 class ResumeService:
@@ -15,6 +17,10 @@ class ResumeService:
 
     async def update(self, resume: ResumeModel):
         return await self.repository.update(resume)
+
+    @staticmethod
+    async def get_s3_file_url(filename):
+        return await S3Worker.get_file_url(BUCKET_NAME, filename)
 
     async def get(self, _id: str):
         return await self.repository.get_by_id(_id)
@@ -28,6 +34,7 @@ class ResumeService:
     async def upload(self, files: List[UploadFile]):
         filenames = []
         resumes = []
+        file_urls = []
         for file in files:
             filename = str(uuid.uuid4()) + "_" + file.filename
             _ = await S3Worker.upload_file(
@@ -35,24 +42,18 @@ class ResumeService:
             )
             filenames.append(filename)
 
+            file_url = await self.get_s3_file_url(filename)
+            file_urls.append(file_url)
+
+        tasks = await asyncio.gather(*[parse(f) for f in file_urls])
+
+        for fname, parse in tasks:
             resume = ResumeModel(**{"created_at": 0,
-                                    "fio": "string",
-                                    "age": 0,
-                                    "experience": 0,
-                                    "stack": [
-                                        "string"
-                                    ],
-                                    "jobs": [
-                                        {
-                                            "name": "string",
-                                            "post": "string",
-                                            "start": 0,
-                                            "end": 0
-                                        }
-                                    ],
-                                    "filename": "string"})
-            resume.filename = filename
+                                    **parse,
+                                    "filename": fname})
+            # resume.filename = filename
             resumes.append(resume.dict())
+
         await self.repository.save_many(resumes)
         ur = await UploadedResumeRepository().create(
             user_id=1,
@@ -61,8 +62,10 @@ class ResumeService:
 
         return ur
 
-    async def get_upload(self, ur_id: str):
-        return await UploadedResumeRepository().get_by_id(ur_id)
 
-    async def get_match_vacancy(self, resume_id: str):
-        return await self.repository.get_match_vacancy(resume_id)
+async def get_upload(self, ur_id: str):
+    return await UploadedResumeRepository().get_by_id(ur_id)
+
+
+async def get_match_vacancy(self, resume_id: str):
+    return await self.repository.get_match_vacancy(resume_id)

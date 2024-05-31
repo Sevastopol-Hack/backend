@@ -30,8 +30,9 @@ async def upload_resumes(files: List[UploadFile],
 
 
 @resume_router.get("/file/{filename}")
-async def get_file_url(filename: str) -> str:
-    return await S3Worker.get_file_url(BUCKET_NAME, filename)
+async def get_file_url(filename: str,
+                       resume_service: ResumeService = Depends()) -> str:
+    return await resume_service.get_s3_file_url(filename)
 
 
 @resume_router.post("/update")
