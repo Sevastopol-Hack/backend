@@ -1,12 +1,12 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
 from fastapi import HTTPException
 
 from utils.passwords import get_password_hash
 
 from .models import Roles, User
-from .schemas import UserCreate
+from .schemas import UserCreate, UserResponse
 
 
 class UserRepository:
@@ -55,3 +55,7 @@ class UserRepository:
 
     async def count(self) -> int:
         return await User.objects.count()
+
+    async def get_all_users(self, offset: int = 0, limit: int = 20) -> List[User]:
+        # filter().limit(limit).offset(offset)
+        return await User.objects.limit(limit).offset(offset).all()

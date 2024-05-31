@@ -104,9 +104,17 @@ class UploadedResumeRepository:
         return obj
 
     async def get_by_id(self, object_id: str) -> Optional[object_model]:
-        res =  await is_document_found(
+        res = await is_document_found(
             await self.collection.find_one({"_id": ObjectId(object_id)})
         )
         del res["id"]
         res["_id"] = str(res["_id"])
+        collection = mongo_db.Resumes
+
+        resumes =  [_ async for _ in mongo_db.Resumes.find(
+            {"_id": {"$in": [ObjectId(obj_id) for obj_id in res["resumes"]]}})]
+        for r in resumes:
+            del r["id"]
+            r["_id"] = str("_id")
+        res["resumes"] = resumes
         return res

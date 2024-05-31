@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, List
 
 import jwt
 from fastapi import Depends, HTTPException
@@ -68,3 +68,8 @@ class UserService:
         user = await self.repository.get_by_id(user_id)
         user.is_verified = True
         await user.update()
+
+    async def get_all_users(self, offset: int = 0, limit: int = 20):
+        res = await self.repository.get_all_users(offset, limit)
+        print(res)
+        return res

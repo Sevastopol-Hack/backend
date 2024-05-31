@@ -1,5 +1,5 @@
 from datetime import timedelta
-from typing import Annotated
+from typing import Annotated, List
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
@@ -67,3 +67,10 @@ async def verify_user_router(
         raise UserNotAdmin
     await UserService().verify_user(user_verify.user_id)
     return {"success": "ok"}
+
+
+@user_router.post("/all")
+async def all_users(
+        # current_user: Annotated[User, Depends(UserService().get_current_user)],
+        limit: int = 20, offset: int = 0, ) -> List[UserResponse]:
+    return await UserService().get_all_users(offset, limit, )
