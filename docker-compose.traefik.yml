@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  api:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.biwork-api.rule=Host(`api.biwork.tech`)"
+      - "traefik.http.routers.biwork-api.entrypoints=http,https"
+      - "traefik.http.routers.biwork-api.tls.certresolver=myresolver"
+      - "traefik.http.services.biwork-api.loadbalancer.server.port=8078"
+      - "traefik.http.routers.biwork-api.service=biwork-api_s3"
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    external: true
