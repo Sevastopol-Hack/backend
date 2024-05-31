@@ -106,6 +106,5 @@ async def main():
     print(await parse(
         "https://files.biwork.tech/biwork/85988bc3-d004-4021-b89d-3b93bb5f0388_7b0905696fa3321ad19b102a2a5ff0c1.rtf?AWSAccessKeyId=tbdnQvks053pl55YRlm3&Signature=uniAO1unXuUFv3IAJl0UUzEDtFk%3D&Expires=1717271611"))
 
-
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
+# loop = asyncio.get_event_loop()
+# loop.run_until_complete(main())
