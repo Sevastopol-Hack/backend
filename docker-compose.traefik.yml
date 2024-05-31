@@ -8,7 +8,7 @@ services:
       - "traefik.http.routers.biwork-api.entrypoints=http,https"
       - "traefik.http.routers.biwork-api.tls.certresolver=myresolver"
       - "traefik.http.services.biwork-api.loadbalancer.server.port=80"
-      - "traefik.http.routers.biwork-api.service=biwork-api_s3"
+      - "traefik.http.routers.biwork-api.service=biwork-api"
     networks:
       - traefik
 
