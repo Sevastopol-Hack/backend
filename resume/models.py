@@ -13,7 +13,7 @@ class Job(BaseModel):
     name: str = ""
     post: str = ""
     start: int = 0
-    end: int = 0
+    end: int = None
 
 
 class ResumeModel(BaseModel):
