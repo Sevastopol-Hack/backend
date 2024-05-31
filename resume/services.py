@@ -36,6 +36,8 @@ class ResumeService:
         filenames = []
         resumes = []
         file_urls = []
+        file_name_to_file_url = {}
+
         for file in files:
             filename = str(uuid.uuid4()) + "_" + file.filename
             _ = await S3Worker.upload_file(
@@ -46,14 +48,16 @@ class ResumeService:
             file_url = await self.get_s3_file_url(filename)
             file_urls.append(file_url)
 
+            file_name_to_file_url[file_url] = filename
+
         tasks = await asyncio.gather(*[resume_parser(f) for f in file_urls])
 
-        for fname, parse in tasks:
+        for furl, parse in tasks:
             print(parse)
 
             resume = ResumeModel(**{"created_at": 0,
                                     **json.loads(parse),
-                                    "filename": fname,})
+                                    "filename": file_name_to_file_url[furl],})
             # resume.filename = filename
             resumes.append(resume.dict())
 
