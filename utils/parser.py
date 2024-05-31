@@ -6,6 +6,10 @@ import aiohttp
 import PyPDF2
 import docx2txt
 import magic
+from odf import teletype
+from odf import text as odf_text
+from odf.opendocument import load
+from striprtf.striprtf import rtf_to_text
 
 mime = magic.Magic(mime=True)
 
@@ -24,10 +28,21 @@ async def get_text(filename: str):
 
                 mimetype = mime.from_buffer(body)
 
+                print(mimetype)
 
                 match mimetype:
                     case "text/plain":
                         return str(body)
+                    case "text/rtf":
+                        return rtf_to_text(body.decode())
+                    case "application/vnd.oasis.opendocument.text":
+                        textdoc = load(BytesIO(body))
+                        allparas = textdoc.getElementsByType(odf_text.P)
+                        print(allparas)
+                        return " ".join([teletype.extractText(i) for i in allparas])
+                        # teletype.extractText(allparas[0])
+                        # print()
+                        # return teletype.extractText(allparas[0])
                     case "application/pdf":
                         pdf_reader = PyPDF2.PdfReader(BytesIO(body))
 
@@ -90,7 +105,8 @@ async def parse(filename: str):
 
 
 async def main():
-    print(await parse("https://files.biwork.tech/biwork/59ac22cd-25b2-48f8-ab1e-f7bc5c0419bd_bb3269be9acfc588e26a182a5bf6e966.odt?AWSAccessKeyId=tbdnQvks053pl55YRlm3&Signature=w8OW0xo2rylEMtBqDPUIFSUZqVs%3D&Expires=1717270375"))
+    print(await parse(
+        "https://files.biwork.tech/biwork/85988bc3-d004-4021-b89d-3b93bb5f0388_7b0905696fa3321ad19b102a2a5ff0c1.rtf?AWSAccessKeyId=tbdnQvks053pl55YRlm3&Signature=uniAO1unXuUFv3IAJl0UUzEDtFk%3D&Expires=1717271611"))
 
 
 loop = asyncio.get_event_loop()

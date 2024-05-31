@@ -80,6 +80,6 @@ class VacancyRepository:
             await self.collection.find_one_and_update({"_id": ObjectId(object_id)},
                                                       {"$set": {"is_close": True}},
                                                       return_document=ReturnDocument.AFTER
-                                                      ),
+                                                      ), )
 
-        )
+

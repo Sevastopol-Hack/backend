@@ -44,3 +44,9 @@ async def close_vacancy(vacancy_id: str,
 async def open_vacancy(vacancy_id: str,
                        vacancy_service: VacancyService = Depends()) -> VacancyModel:
     return await vacancy_service.open_vacancy(vacancy_id)
+
+
+@vacancy_router.post("/resume")
+async def get_all_vacancy_resumes(vacancy_id: str,
+                                  vacancy_service: VacancyService = Depends()):
+    return await vacancy_service.get_all_vacancy_resumes(vacancy_id)
