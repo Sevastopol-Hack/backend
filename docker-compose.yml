@@ -4,22 +4,23 @@ x-bitech_api-variables: &bitech_api-variables
   DB_USER: postgres
   DB_PASSWORD: postgres
   DB_NAME: bitech_api
-  DB_HOST: bitech_api_database
+  DB_HOST: api_database
   DB_PORT: 5432
   PRODUCTION: false
   METRICS: false
-  SECRET_KEY: "fgdfgojnfgoi94409tj0idfgidnf"
-  YOOKASSA_ACCOUNT_ID: "212591"
-  YOOKASSA_SECRET_KEY: "test_Bu_njDYEmKSqZjIKHEA0cnGmZnATPV7INM1irDsLWEc"
-  MINIO_ENDPOINT_URL: "http://api_s3:9000"
-  S3_WORKER_API: "http://s3_worker:8000"
-  YAGPT_KEY: "AQVN2Vd-gMlDAjVPAKNMAYxb7t6JpNOag60-Mcgz"
-  YAGPT_MODEL_URI: "gpt://b1g2ahktcv1255vqabvd/yandexgpt"
-  SMS_EMAIL: atrepalin19@gmail.com
-  SMS_KEY: rJ8VN0ewPs7PkSzyn7OoTNjdQThwtUqs
+  SECRET_KEY: ${SECRET_KEY}
+  YOOKASSA_ACCOUNT_ID: ${YOOKASSA_ACCOUNT_ID}
+  YOOKASSA_SECRET_KEY: ${YOOKASSA_SECRET_KEY}
+  MINIO_ENDPOINT_URL: ${MINIO_ENDPOINT_URL}
+  S3_WORKER_API: ${S3_WORKER_API}
+  YAGPT_KEY: ${YAGPT_KEY}
+  YAGPT_MODEL_URI: ${YAGPT_MODEL_URI}
+  SMS_EMAIL: ${SMS_EMAIL}
+  SMS_KEY: ${SMS_KEY}
+  MONGODB_URL: mongodb://mongodb_database:27017
 
 services:
-  bitech_api:
+  api:
     build: .
     command: python main.py
     ports:
@@ -30,31 +31,41 @@ services:
       - ./:/app
     restart: always
     depends_on:
-      bitech_api_database:
-        condition: service_healthy
+      - api_database
+      - mongodb_database
+
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost/ping"]
       interval: 30s
       timeout: 10s
       retries: 5
 
-  bitech_api_database:
+  api_database:
     image: postgres:14-alpine
     command: postgres -N 100
     volumes:
-      - bitech_api_database_volume:/var/lib/postgresql/data/
+      - api_database_volume:/var/lib/postgresql/data/
     restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=bitech_api
     ports:
-      - '54324:5432'
+      - '54325:5432'
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U postgres']
       interval: 5s
       timeout: 5s
       retries: 5
 
+  mongodb_database:
+    image: mongo:6.0.9
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data_volume:/data/db
+
 volumes:
-  bitech_api_database_volume:
+  api_database_volume:
+  mongodb_data_volume:

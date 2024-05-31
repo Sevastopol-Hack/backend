@@ -23,9 +23,8 @@ class UserRepository:
 
         dc = user_create.dict(exclude={"password"})
         dc["password_hash"] = get_password_hash(password)
-        dc["role"] = Roles.user
-        s = datetime.strptime(dc["date_of_birth"], "%d-%m-%Y")
-        dc["date_of_birth"] = datetime.date(s)
+        dc["role"] = user_create.role
+
         user = User(**dc)
         await user.save()
 

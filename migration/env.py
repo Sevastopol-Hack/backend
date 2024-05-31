@@ -15,14 +15,13 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name, disable_existing_loggers=False)
 
-from payment import models  # noqa
-
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 # import all models
 from users import models  # noqa
+from stack import models  # noqa
 
 target_metadata = metadata
 config.set_main_option("sqlalchemy.url", DATABASE_URL)

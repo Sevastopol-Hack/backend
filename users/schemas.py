@@ -1,18 +1,14 @@
-from datetime import datetime
-
 from pydantic import BaseModel
 
-from .models import Gender, User
+from .models import User, Roles
 
 
 class UserCreate(BaseModel):
     name: str
     surname: str
     phone: str
-    gender: Gender
-    date_of_birth: str
     password: str
-    region: str
+    role: Roles
 
 
 class UserResponse(User.get_pydantic(exclude={"password_hash", "created_at"})):
@@ -31,3 +27,7 @@ class TokenData(BaseModel):
 class UserLogin(BaseModel):
     phone: str
     password: str
+
+
+class UserVerify(BaseModel):
+    user_id: int

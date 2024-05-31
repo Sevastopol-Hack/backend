@@ -7,8 +7,10 @@ from database import BaseMeta
 
 
 class Roles(Enum):
-    user = "user"
     admin = "admin"
+    recruiter = "recruiter"
+    hiring_manager = "hiring_manager"
+    resource_manager = "resource_manager"
 
 
 class Gender(Enum):
@@ -24,10 +26,7 @@ class User(ormar.Model):
     name: str = ormar.String(max_length=200)
     surname: str = ormar.String(max_length=200)
     phone: str = ormar.String(max_length=200)
-    phone_verified: bool = ormar.Boolean(default=False)
+    is_verified: bool = ormar.Boolean(default=False)
     role: Roles = ormar.Enum(enum_class=Roles)
-    gender: Gender = ormar.Enum(enum_class=Gender)
-    date_of_birth: datetime.date = ormar.Date()
     password_hash: str = ormar.String(max_length=200)
     created_at: datetime.datetime = ormar.DateTime(default=datetime.datetime.now)
-    region: str = ormar.String(max_length=255)

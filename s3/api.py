@@ -94,6 +94,7 @@ class S3Worker:
                 resp_json = await resp.json()
                 if not resp.ok:
                     raise HTTPException(resp.status, resp_json)
+                print(resp_json, MINIO_ADDRESS)
                 return resp_json.replace(
                     "http://host.docker.internal:9000", MINIO_ADDRESS
                 )

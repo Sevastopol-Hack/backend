@@ -29,7 +29,8 @@ class UserService:
     async def authenticate_user_by_token(self, token: str) -> User | None:
         pass
 
-    async def get_current_user(self, token: Annotated[str, Depends(oauth2_scheme)]):
+    async def get_current_user(self,
+                               token: Annotated[str, Depends(oauth2_scheme)]) -> User:
         credentials_exception = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",
@@ -62,3 +63,8 @@ class UserService:
 
     async def delete_user(self, user: User) -> None:
         await self.repository.delete_user(user)
+
+    async def verify_user(self, user_id: int) -> None:
+        user = await self.repository.get_by_id(user_id)
+        user.is_verified = True
+        await user.update()

@@ -6,19 +6,15 @@ from fastapi.security import OAuth2PasswordBearer
 from starlette import status
 
 from config import ACCESS_TOKEN_EXPIRE_MINUTES
-from users.models import User
-from users.schemas import Token, UserCreate, UserLogin, UserResponse
+from users.exceptions import UserNotAdmin
+from users.models import User, Roles
+from users.schemas import Token, UserCreate, UserLogin, UserResponse, UserVerify
 from users.services import UserService
 from utils.passwords import create_access_token
 
 user_router = APIRouter(tags=["user"], prefix="/user")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
-@user_router.get("")
-async def get_user():
-    return {"message": "Hello World"}
 
 
 @user_router.post("/register")
@@ -49,14 +45,25 @@ async def login_for_access_token(user_login: UserLogin) -> Token:
 
 @user_router.post("/self")
 async def login_for_access_token(
-    current_user: Annotated[User, Depends(UserService().get_current_user)],
+        current_user: Annotated[User, Depends(UserService().get_current_user)],
 ):
     return UserResponse(**current_user.dict())
 
 
 @user_router.delete("")
 async def delete_user(
-    current_user: Annotated[User, Depends(UserService().get_current_user)],
+        current_user: Annotated[User, Depends(UserService().get_current_user)],
 ):
     await UserService().delete_user(current_user)
+    return {"success": "ok"}
+
+
+@user_router.post("/verify")
+async def verify_user_router(
+        current_user: Annotated[User, Depends(UserService().get_current_user)],
+        user_verify: UserVerify
+):
+    if current_user.role != Roles.admin:
+        raise UserNotAdmin
+    await UserService().verify_user(user_verify.user_id)
     return {"success": "ok"}
