@@ -90,7 +90,7 @@ async def parse(filename: str):
 
 
 async def main():
-    print(await parse("https://files.biwork.tech/biwork/4da6e7aa-fbbc-4e15-82fd-1f106d2b714b_5e6c0a291ba6a12a833ae806bb743462.docx?AWSAccessKeyId=tbdnQvks053pl55YRlm3&Signature=xUcDoNtvjupmJCdZHT2MBOddS5M%3D&Expires=1717269524"))
+    print(await parse("https://files.biwork.tech/biwork/59ac22cd-25b2-48f8-ab1e-f7bc5c0419bd_bb3269be9acfc588e26a182a5bf6e966.odt?AWSAccessKeyId=tbdnQvks053pl55YRlm3&Signature=w8OW0xo2rylEMtBqDPUIFSUZqVs%3D&Expires=1717270375"))
 
 
 loop = asyncio.get_event_loop()
