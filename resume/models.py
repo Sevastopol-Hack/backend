@@ -25,6 +25,7 @@ class ResumeModel(BaseModel):
     stack: List[str]
     jobs: list[Job]
     filename: str = None
+    email: str = ""
 
     def getId(self):
         return self.id

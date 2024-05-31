@@ -145,6 +145,6 @@ class UploadedResumeRepository:
             {"_id": {"$in": [ObjectId(obj_id) for obj_id in res["resumes"]]}})]
         for r in resumes:
             del r["id"]
-            r["_id"] = str("_id")
+            r["_id"] = str(r["_id"])
         res["resumes"] = resumes
         return res
