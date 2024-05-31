@@ -39,8 +39,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-    networks:
-      - biwork-backend
+
 
   api_database:
     image: postgres:14-alpine
@@ -59,8 +58,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    networks:
-      - biwork-backend
+
 
   mongodb_database:
     image: mongo:6.0.9
@@ -70,8 +68,6 @@ services:
     volumes:
       - mongodb_data_volume:/data/db
 
-    networks:
-      - biwork-backend
 
 
 volumes:
