@@ -30,6 +30,8 @@ class ResumeRepository:
         vacancy = await VacancyRepository().get_all(limit=10000)
         res = []
         for v in vacancy:
+            if v.is_close:
+                continue
             v["_id"] = str(v["_id"])
             del v["id"]
             perc = self.get_match(resume["stack"], v["stack"])

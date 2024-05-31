@@ -15,6 +15,7 @@ class VacancyModel(BaseModel):
 
     title: str
     stack: List[str]
+    is_close: bool = False
 
     class Config:
         allow_population_by_field_name = True

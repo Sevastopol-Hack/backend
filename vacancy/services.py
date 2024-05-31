@@ -19,3 +19,9 @@ class VacancyService:
 
     async def update(self, vacancy: VacancyModel):
         return await self.repository.update(vacancy)
+
+    async def open_vacancy(self, object_id: str):
+        return await self.repository.open_vacancy(object_id)
+
+    async def close_vacancy(self, object_id: str):
+        return await self.repository.close_vacancy(object_id)

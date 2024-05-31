@@ -67,3 +67,19 @@ class VacancyRepository:
     async def delete(self, object_id: str) -> Optional[object_model]:
         return await is_document_found(
             await self.collection.find_one_and_delete({"_id": ObjectId(object_id)}))
+
+    async def open_vacancy(self, object_id: str):
+        return await is_document_found(
+            await self.collection.find_one_and_update({"_id": ObjectId(object_id)},
+                                                      {"$set": {"is_close": False}},
+                                                      return_document=ReturnDocument.AFTER
+                                                      ))
+
+    async def close_vacancy(self, object_id: str):
+        return await is_document_found(
+            await self.collection.find_one_and_update({"_id": ObjectId(object_id)},
+                                                      {"$set": {"is_close": True}},
+                                                      return_document=ReturnDocument.AFTER
+                                                      ),
+
+        )

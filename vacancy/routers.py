@@ -32,3 +32,15 @@ async def upload_vacancy(vacancy: VacancyModel,
 async def update_vacancy(vacancy: VacancyModel,
                          vacancy_service: VacancyService = Depends()) -> VacancyModel:
     return await vacancy_service.update(vacancy)
+
+
+@vacancy_router.post("/close")
+async def close_vacancy(vacancy_id: str,
+                        vacancy_service: VacancyService = Depends()) -> VacancyModel:
+    return await vacancy_service.close_vacancy(vacancy_id)
+
+
+@vacancy_router.post("/open")
+async def open_vacancy(vacancy_id: str,
+                       vacancy_service: VacancyService = Depends()) -> VacancyModel:
+    return await vacancy_service.open_vacancy(vacancy_id)
