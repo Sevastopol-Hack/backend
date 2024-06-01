@@ -1,4 +1,5 @@
 import asyncio
+import json
 from dataclasses import dataclass
 from io import BytesIO
 
@@ -66,7 +67,7 @@ async def parse(filename: str):
     data = await get_text(filename)
     # print(data)
     if not data:
-        return
+        return filename, {}
 
     prompt = {
         "modelUri": YAGPT_MODEL_URI,
@@ -96,12 +97,13 @@ async def parse(filename: str):
     async with aiohttp.ClientSession() as session:
         async with session.post(url, headers=headers, json=prompt) as resp:
             result = await resp.json()
+            print(result)
             result = result["result"]["alternatives"][0]["message"]["text"]
             result = result.replace("#", "")
             result = result.replace("*", "")
 
     print("pars", result)
-    return filename, result
+    return filename, json.loads(result)
 
 
 async def main():

@@ -72,6 +72,7 @@ class S3Worker:
 
             async with session.post(url, params=params, data=data) as resp:
                 resp_json = await resp.json()
+                print(resp_json)
                 if not resp.ok:
                     raise HTTPException(resp.status, resp_json)
                 return resp_json

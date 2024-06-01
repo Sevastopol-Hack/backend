@@ -35,8 +35,8 @@ class ResumeService:
     async def upload(self, files: List[UploadFile]):
         filenames = []
         resumes = []
-        file_urls = []
-        file_name_to_file_url = {}
+        # file_urls = []
+        # file_name_to_file_url = {}
 
         for file in files:
             filename = str(uuid.uuid4()) + "_" + file.filename
@@ -46,20 +46,31 @@ class ResumeService:
             filenames.append(filename)
 
             file_url = await self.get_s3_file_url(filename)
-            file_urls.append(file_url)
+            # file_urls.append(file_url)
 
-            file_name_to_file_url[file_url] = filename
+            # file_name_to_file_url[file_url] = filename
 
-        tasks = await asyncio.gather(*[resume_parser(f) for f in file_urls])
-
-        for furl, parse in tasks:
-            print(parse)
-
-            resume = ResumeModel(**{"created_at": 0,
-                                    **json.loads(parse),
-                                    "filename": file_name_to_file_url[furl],})
+            for i in range(5):
+                try:
+                    _, res = await resume_parser(file_url)
+                    resume = ResumeModel(**{"created_at": 0,
+                                            **res,
+                                            "filename": filename, })
+                    break
+                except Exception as e:
+                    print(e)
+                    await asyncio.sleep(0.5)
+            else:
+                resume = ResumeModel(**{"created_at": 0,
+                                        "filename": filename, })
             # resume.filename = filename
+
             resumes.append(resume.dict())
+
+        # tasks = await asyncio.gather(*[resume_parser(f) for f in file_urls])
+        #
+        # for furl, parse in tasks:
+        #     print(parse)
 
         await self.repository.save_many(resumes)
         ur = await UploadedResumeRepository().create(
