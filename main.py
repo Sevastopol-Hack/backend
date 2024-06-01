@@ -8,7 +8,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from config import BUCKET_NAME, LOGGING_CONFIG, METRICS, PRODUCTION
-from database import database, create_index
+from database import create_index, database
 from resume.routers import resume_router
 from s3.api import S3Worker
 from stack.routers import stack_router
@@ -16,7 +16,6 @@ from stack.services import StackService
 from users.routers import user_router
 from utils import apply_migrations
 from vacancy.routers import vacancy_router
-from yagpt.routers import yagpt_router
 
 logger = getLogger("app")
 
@@ -34,7 +33,6 @@ async def lifespan(app: FastAPI):
         await database_.connect()
 
     await StackService().init_default_stack()
-
 
     yield
 
@@ -83,11 +81,9 @@ async def ping_pong():
 
 
 app.include_router(user_router)
-app.include_router(yagpt_router)
 app.include_router(resume_router)
 app.include_router(vacancy_router)
 app.include_router(stack_router)
-
 
 if __name__ == "__main__":
     uvicorn.run(

@@ -1,6 +1,7 @@
 from typing import List, Set
 
 from pydantic import BaseModel
+
 from .models import ResumeModel
 
 

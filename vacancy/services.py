@@ -1,8 +1,9 @@
+from resume.schemas import SearchRequest as ResumeSearchRequest
+from resume.services import ResumeService
+
 from .models import VacancyModel
 from .repositories import VacancyRepository
 from .schemas import SearchRequest, SearchResponse
-from resume.services import ResumeService
-from resume.schemas import SearchRequest as ResumeSearchRequest
 
 
 class VacancyService:
@@ -28,9 +29,11 @@ class VacancyService:
     async def close_vacancy(self, object_id: str):
         return await self.repository.close_vacancy(object_id)
 
-    async def get_all_vacancy_resumes(self, object_id: str, limit: int = 20,
-                                      skip: int = 0):
+    async def get_all_vacancy_resumes(
+        self, object_id: str, limit: int = 20, skip: int = 0
+    ):
         vac = await self.repository.get_by_id(object_id)
 
         return await ResumeService().search(
-            ResumeSearchRequest(stack=vac["stack"], limit=limit, skip=skip))
+            ResumeSearchRequest(stack=vac["stack"], limit=limit, skip=skip)
+        )

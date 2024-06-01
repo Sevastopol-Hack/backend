@@ -1,12 +1,12 @@
 import databases
 import ormar
 import sqlalchemy
+from bson import ObjectId
 from motor.motor_asyncio import AsyncIOMotorClient
+from pydantic import BaseModel, ConfigDict
 from pymongo import TEXT
 
 from config import DATABASE_URL, MONGODB_URL
-from pydantic import BaseModel, ConfigDict
-from bson import ObjectId
 
 metadata = sqlalchemy.MetaData()
 database = databases.Database(DATABASE_URL)
@@ -32,5 +32,13 @@ class BaseModelWithConfig:
 
 
 async def create_index():
-    await mongo_db.Resumes.create_index([('stack', TEXT), ])
-    await mongo_db.Vacancy.create_index([('title', TEXT), ])
+    await mongo_db.Resumes.create_index(
+        [
+            ("stack", TEXT),
+        ]
+    )
+    await mongo_db.Vacancy.create_index(
+        [
+            ("title", TEXT),
+        ]
+    )

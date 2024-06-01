@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional, List
+from typing import List, Optional
 
 from fastapi import HTTPException
 
@@ -57,5 +57,4 @@ class UserRepository:
         return await User.objects.count()
 
     async def get_all_users(self, offset: int = 0, limit: int = 20) -> List[User]:
-        # filter().limit(limit).offset(offset)
         return await User.objects.limit(limit).offset(offset).all()

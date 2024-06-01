@@ -1,12 +1,12 @@
-from typing import Optional, List
+from typing import List, Optional
 
+from bson import ObjectId
+from pydantic import BaseModel
 from pydantic import Field
+from pydantic import Field as PydanticField
 from pydantic import validator
 
-from utils.mongodb import get_current_time_in_unix_format, PyObjectId
-
-from pydantic import BaseModel, Field as PydanticField
-from bson import ObjectId
+from utils.mongodb import PyObjectId, get_current_time_in_unix_format
 
 
 class VacancyModel(BaseModel):
@@ -20,8 +20,7 @@ class VacancyModel(BaseModel):
     class Config:
         allow_population_by_field_name = True
         arbitrary_types_allowed = True  # required for the _id
-        json_encoders = {ObjectId: lambda oid: str(oid)
-                         }
+        json_encoders = {ObjectId: lambda oid: str(oid)}
 
     @validator("created_at")
     @classmethod

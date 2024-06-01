@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from .models import User, Roles
+from .models import Roles, User
 
 
 class UserCreate(BaseModel):

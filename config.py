@@ -31,57 +31,101 @@ S3_WORKER_API = os.environ.get("S3_WORKER_API")
 BUCKET_NAME = "biwork"
 
 # YOOKASSA
-YOOKASSA_ACCOUNT_ID = os.environ.get("YOOKASSA_ACCOUNT_ID", None)
-YOOKASSA_SECRET_KEY = os.environ.get("YOOKASSA_SECRET_KEY", None)
-Configuration.account_id = YOOKASSA_ACCOUNT_ID
-Configuration.secret_key = YOOKASSA_SECRET_KEY
 
 YAGPT_KEY = os.environ.get("YAGPT_KEY")
 YAGPT_MODEL_URI = os.environ.get("YAGPT_MODEL_URI")
 
-SMS_EMAIL = os.environ.get("SMS_EMAIL")
-SMS_KEY = os.environ.get("SMS_KEY")
 MONGODB_URL = os.environ.get("MONGODB_URL")
 
-ds_keyword = ['tensorflow', 'keras', 'pytorch', 'machine learning', 'deep Learning',
-              'flask', 'streamlit']
-web_keyword = ['react', 'django', 'node jS', 'react js', 'php', 'laravel', 'magento',
-               'wordpress', 'javascript', 'angular js', 'C#', 'Asp.net', 'flask']
-android_keyword = ['android', 'android development', 'flutter', 'kotlin', 'xml', 'kivy']
-ios_keyword = ['ios', 'ios development', 'swift', 'cocoa', 'cocoa touch', 'xcode']
-uiux_keyword = ['ux', 'adobe xd', 'figma', 'zeplin', 'balsamiq', 'ui', 'prototyping',
-                'wireframes', 'storyframes', 'adobe photoshop', 'photoshop', 'editing',
-                'adobe illustrator', 'illustrator', 'adobe after effects',
-                'after effects', 'adobe premier pro', 'premier pro', 'adobe indesign',
-                'indesign', 'wireframe', 'solid', 'grasp', 'user research',
-                'user experience']
+ds_keyword = [
+    "tensorflow",
+    "keras",
+    "pytorch",
+    "machine learning",
+    "deep Learning",
+    "flask",
+    "streamlit",
+]
+web_keyword = [
+    "react",
+    "django",
+    "node jS",
+    "react js",
+    "php",
+    "laravel",
+    "magento",
+    "wordpress",
+    "javascript",
+    "angular js",
+    "C#",
+    "Asp.net",
+    "flask",
+]
+android_keyword = ["android", "android development", "flutter", "kotlin", "xml", "kivy"]
+ios_keyword = ["ios", "ios development", "swift", "cocoa", "cocoa touch", "xcode"]
+uiux_keyword = [
+    "ux",
+    "adobe xd",
+    "figma",
+    "zeplin",
+    "balsamiq",
+    "ui",
+    "prototyping",
+    "wireframes",
+    "storyframes",
+    "adobe photoshop",
+    "photoshop",
+    "editing",
+    "adobe illustrator",
+    "illustrator",
+    "adobe after effects",
+    "after effects",
+    "adobe premier pro",
+    "premier pro",
+    "adobe indesign",
+    "indesign",
+    "wireframe",
+    "solid",
+    "grasp",
+    "user research",
+    "user experience",
+]
 
-systems_analyst = ["knowledge modeling language",
-                   "knowledge representation and reasoning",
-                   "axure rp",
-                   "mockflow",
-                   "invision",
-                   "balsamiq",
-                   "sparx enterprise architect",
-                   "ibm rational rose",
-                   "visual paradigm",
-                   "ibm doors",
-                   "jira",
-                   "tfs",
-                   "microsoft power bi",
-                   "tableau",
-                   "qlikview",
-                   "selenium",
-                   "apache jmeter",
-                   "hp loadrunner",
-                   "microsoft word",
-                   "google docs",
-                   "confluence",
-                   "slack",
-                   "microsoft teams",
-                   "trello"]
+systems_analyst = [
+    "knowledge modeling language",
+    "knowledge representation and reasoning",
+    "axure rp",
+    "mockflow",
+    "invision",
+    "balsamiq",
+    "sparx enterprise architect",
+    "ibm rational rose",
+    "visual paradigm",
+    "ibm doors",
+    "jira",
+    "tfs",
+    "microsoft power bi",
+    "tableau",
+    "qlikview",
+    "selenium",
+    "apache jmeter",
+    "hp loadrunner",
+    "microsoft word",
+    "google docs",
+    "confluence",
+    "slack",
+    "microsoft teams",
+    "trello",
+]
 
-DEFAULT_STACKS = ds_keyword + web_keyword + android_keyword + ios_keyword + uiux_keyword + systems_analyst
+DEFAULT_STACKS = (
+    ds_keyword
+    + web_keyword
+    + android_keyword
+    + ios_keyword
+    + uiux_keyword
+    + systems_analyst
+)
 
 # LOGGING
 LOGGING_CONFIG: Dict[str, Any] = {

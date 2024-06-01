@@ -1,5 +1,4 @@
 import asyncio
-import json
 import uuid
 from typing import List
 
@@ -7,10 +6,11 @@ from fastapi import UploadFile
 
 from config import BUCKET_NAME
 from s3.api import S3Worker
+from utils import parse as resume_parser
+
 from .models import ResumeModel
 from .repositories import ResumeRepository, UploadedResumeRepository
 from .schemas import SearchRequest, SearchResponse
-from utils import parse as resume_parser
 
 
 class ResumeService:
@@ -27,16 +27,15 @@ class ResumeService:
         return await self.repository.get_by_id(_id)
 
     async def search(self, sr: SearchRequest) -> SearchResponse:
-        res = await self.repository.search(sr.limit, sr.skip, sr.experience_from,
-                                           sr.experience_to, sr.stack)
+        res = await self.repository.search(
+            sr.limit, sr.skip, sr.experience_from, sr.experience_to, sr.stack
+        )
 
         return res
 
     async def upload(self, files: List[UploadFile]):
         filenames = []
         resumes = []
-        # file_urls = []
-        # file_name_to_file_url = {}
 
         for file in files:
             filename = str(uuid.uuid4()) + "_" + file.filename
@@ -46,23 +45,28 @@ class ResumeService:
             filenames.append(filename)
 
             file_url = await self.get_s3_file_url(filename)
-            # file_urls.append(file_url)
-
-            # file_name_to_file_url[file_url] = filename
 
             for i in range(5):
                 try:
                     _, res = await resume_parser(file_url)
-                    resume = ResumeModel(**{"created_at": 0,
-                                            **res,
-                                            "filename": filename, })
+                    resume = ResumeModel(
+                        **{
+                            "created_at": 0,
+                            **res,
+                            "filename": filename,
+                        }
+                    )
                     break
                 except Exception as e:
                     print(e)
                     await asyncio.sleep(0.5)
             else:
-                resume = ResumeModel(**{"created_at": 0,
-                                        "filename": filename, })
+                resume = ResumeModel(
+                    **{
+                        "created_at": 0,
+                        "filename": filename,
+                    }
+                )
             # resume.filename = filename
 
             resumes.append(resume.dict())
@@ -74,8 +78,7 @@ class ResumeService:
 
         await self.repository.save_many(resumes)
         ur = await UploadedResumeRepository().create(
-            user_id=1,
-            resumes=[str(r["_id"]) for r in resumes]
+            user_id=1, resumes=[str(r["_id"]) for r in resumes]
         )
 
         return ur

@@ -1,13 +1,12 @@
-from datetime import datetime
-
 import time
-from typing import NoReturn, Annotated
+from datetime import datetime
+from typing import Annotated, NoReturn
 
 from bson import ObjectId
+from bson.objectid import ObjectId as BsonObjectId
 
 from database import BaseModelWithConfig
 from utils.exeptions import DocumentNotFound, InvalidObjectId
-from bson.objectid import ObjectId as BsonObjectId
 
 
 def get_current_time_in_unix_format() -> float:
@@ -18,7 +17,7 @@ def get_current_time_in_unix_format() -> float:
 
 
 async def is_document_found(
-        my_object: BaseModelWithConfig | None,
+    my_object: BaseModelWithConfig | None,
 ) -> BaseModelWithConfig | None:
     """
     Checking that Document is found
@@ -37,7 +36,6 @@ async def is_valid_object_id(object_id: str) -> NoReturn:
 
 
 class PyObjectId(ObjectId):
-
     @classmethod
     def __get_validators__(cls):
         yield cls.validate

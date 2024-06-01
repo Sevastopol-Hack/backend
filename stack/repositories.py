@@ -5,7 +5,6 @@ from .schemas import StackCreate
 
 
 class StackRepository:
-
     async def create(self, stack_create: StackCreate) -> Stack:
         stack = Stack(**stack_create.dict())
         await stack.save()
@@ -20,5 +19,4 @@ class StackRepository:
 
     async def get_all(self):
         res = await Stack.objects.all()
-        print(res)
         return res

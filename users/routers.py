@@ -7,7 +7,7 @@ from starlette import status
 
 from config import ACCESS_TOKEN_EXPIRE_MINUTES
 from users.exceptions import UserNotAdmin
-from users.models import User, Roles
+from users.models import Roles, User
 from users.schemas import Token, UserCreate, UserLogin, UserResponse, UserVerify
 from users.services import UserService
 from utils.passwords import create_access_token
@@ -29,7 +29,9 @@ async def register(user_create: UserCreate) -> Token:
 
 @user_router.post("/token")
 async def login_for_access_token(user_login: UserLogin) -> Token:
-    user = await UserService().authenticate_user(user_login.username, user_login.password)
+    user = await UserService().authenticate_user(
+        user_login.username, user_login.password
+    )
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -45,14 +47,14 @@ async def login_for_access_token(user_login: UserLogin) -> Token:
 
 @user_router.post("/self")
 async def login_for_access_token(
-        current_user: Annotated[User, Depends(UserService().get_current_user)],
+    current_user: Annotated[User, Depends(UserService().get_current_user)],
 ):
     return UserResponse(**current_user.dict())
 
 
 @user_router.delete("")
 async def delete_user(
-        current_user: Annotated[User, Depends(UserService().get_current_user)],
+    current_user: Annotated[User, Depends(UserService().get_current_user)],
 ):
     await UserService().delete_user(current_user)
     return {"success": "ok"}
@@ -60,8 +62,8 @@ async def delete_user(
 
 @user_router.post("/verify")
 async def verify_user_router(
-        current_user: Annotated[User, Depends(UserService().get_current_user)],
-        user_verify: UserVerify
+    current_user: Annotated[User, Depends(UserService().get_current_user)],
+    user_verify: UserVerify,
 ):
     if current_user.role != Roles.admin:
         raise UserNotAdmin
@@ -71,6 +73,10 @@ async def verify_user_router(
 
 @user_router.post("/all")
 async def all_users(
-        # current_user: Annotated[User, Depends(UserService().get_current_user)],
-        limit: int = 20, offset: int = 0, ) -> List[UserResponse]:
-    return await UserService().get_all_users(offset, limit, )
+    limit: int = 20,
+    offset: int = 0,
+) -> List[UserResponse]:
+    return await UserService().get_all_users(
+        offset,
+        limit,
+    )

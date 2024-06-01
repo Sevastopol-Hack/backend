@@ -29,8 +29,9 @@ class UserService:
     async def authenticate_user_by_token(self, token: str) -> User | None:
         pass
 
-    async def get_current_user(self,
-                               token: Annotated[str, Depends(oauth2_scheme)]) -> User:
+    async def get_current_user(
+        self, token: Annotated[str, Depends(oauth2_scheme)]
+    ) -> User:
         credentials_exception = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",

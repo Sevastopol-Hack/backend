@@ -1,8 +1,9 @@
-from .exceptions import StackNotFound, StackAlreadyExist
+from config import DEFAULT_STACKS
+
+from .exceptions import StackAlreadyExist, StackNotFound
 from .models import Stack
 from .repositories import StackRepository
 from .schemas import StackCreate
-from config import DEFAULT_STACKS
 
 
 class StackService:
@@ -14,7 +15,7 @@ class StackService:
         return await self.repository.create(stack_create)
 
     async def get_by_id(self, stack_id: int) -> Stack:
-        stack =  await self.repository.get_by_id(stack_id)
+        stack = await self.repository.get_by_id(stack_id)
         if stack is None:
             raise StackNotFound
         return stack
