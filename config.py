@@ -1,10 +1,8 @@
-import json
 import os
 from typing import Any, Dict
 
 from dotenv import load_dotenv
 from passlib.context import CryptContext
-from yookassa import Configuration
 
 load_dotenv()
 
