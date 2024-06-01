@@ -23,7 +23,7 @@ class VacancyRepository:
             filter_["$text"] = {"$search": query.strip()}
         res = [document async for document in self.collection.find(filter_)
         .skip(skip)
-        .limit(limit)]
+        .limit(limit).sort("is_close", -1)]
 
         print(res)
 
@@ -38,7 +38,8 @@ class VacancyRepository:
         if filter_res is None:
             filter_res = {}
         return [document async for document in
-                self.collection.find(filter_res).skip(skip).limit(limit).sort("is_close", -1)]
+                self.collection.find(filter_res).skip(skip).limit(limit).sort(
+                    "is_close", -1)]
 
     async def get_by_id(self, object_id: str) -> Optional[object_model]:
         return await is_document_found(
@@ -81,5 +82,3 @@ class VacancyRepository:
                                                       {"$set": {"is_close": True}},
                                                       return_document=ReturnDocument.AFTER
                                                       ), )
-
-
