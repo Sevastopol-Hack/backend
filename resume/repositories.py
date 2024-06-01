@@ -51,7 +51,7 @@ class ResumeRepository:
         if stack:
             filter_["$or"] = [
                 {"stack": {"$in": list(stack)}},
-                {"stack": {"$regex": "|".join(stack)}}
+                {"stack": {"$regex": "|".join(stack), "$options": "i"}}
             ]
             # filter_["stack"] = {
             #     "$or": [{"$in": list(stack)}, {"$regex": "|".join(stack)}]}
@@ -106,7 +106,7 @@ class ResumeRepository:
             {"_id": ObjectId(object_update.id)},
             {"$set": object_update.dict(exclude={"_id", "id"})},
             return_document=ReturnDocument.AFTER
-            )
+        )
 
         # r = await self.collection.find_one({"_id": res.inserted_id})
         #
