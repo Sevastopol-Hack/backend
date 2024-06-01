@@ -56,7 +56,32 @@ uiux_keyword = ['ux', 'adobe xd', 'figma', 'zeplin', 'balsamiq', 'ui', 'prototyp
                 'indesign', 'wireframe', 'solid', 'grasp', 'user research',
                 'user experience']
 
-DEFAULT_STACKS = ds_keyword + web_keyword + android_keyword + ios_keyword + uiux_keyword
+systems_analyst = ["knowledge modeling language",
+                   "knowledge representation and reasoning",
+                   "axure rp",
+                   "mockflow",
+                   "invision",
+                   "balsamiq",
+                   "sparx enterprise architect",
+                   "ibm rational rose",
+                   "visual paradigm",
+                   "ibm doors",
+                   "jira",
+                   "tfs",
+                   "microsoft power bi",
+                   "tableau",
+                   "qlikview",
+                   "selenium",
+                   "apache jmeter",
+                   "hp loadrunner",
+                   "microsoft word",
+                   "google docs",
+                   "confluence",
+                   "slack",
+                   "microsoft teams",
+                   "trello"]
+
+DEFAULT_STACKS = ds_keyword + web_keyword + android_keyword + ios_keyword + uiux_keyword + systems_analyst
 
 # LOGGING
 LOGGING_CONFIG: Dict[str, Any] = {
