@@ -119,6 +119,9 @@ MINIO_ADDRESS - ссылка н minio
 docker compose --env-file .env -f docker-compose.yml up --build
 ```
 
+3. После запуска api будет доступно по
+   адресу [`http://localhost:8078`](http://localhost:8078) ([swagger](http://localhost:8078/docs))
+
 ### Архитектура
 
 В проекте используется луковая архитектура
