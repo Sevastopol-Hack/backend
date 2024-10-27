@@ -38,7 +38,7 @@ class ResumeService:
         resumes = []
 
         for file in files:
-            filename = str(uuid.uuid4()) + "_" + file.filename
+            filename = str(uuid.uuid4())
             _ = await S3Worker.upload_file(
                 bucket=BUCKET_NAME, file=file, filename=filename
             )
