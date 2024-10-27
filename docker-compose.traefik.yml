@@ -21,4 +21,5 @@ services:
 
 networks:
   traefik:
+    name: traefik-swarm
     external: true
